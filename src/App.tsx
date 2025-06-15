@@ -34,6 +34,31 @@ function App() {
     alert(JSON.stringify(data, null, 2));
   }
 
+  async function callReadData() {
+    const token = await getToken();
+    const res = await fetch(`${API_URL}/read-data`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    alert(JSON.stringify(data, null, 2));
+  }
+
+  async function callWriteData() {
+    const token = await getToken();
+    const res = await fetch(`${API_URL}/write-data`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sample: "data" }), // Adjust payload as needed
+    });
+    const data = await res.json();
+    alert(JSON.stringify(data, null, 2));
+  }
+
   return (
     <div>
       {!isAuthenticated ? (
@@ -43,6 +68,8 @@ function App() {
           <p>Welcome {account?.name}</p>
           <button onClick={() => instance.logoutPopup()}>Logout</button>
           <button onClick={callWhoAmI}>Call WhoAmI</button>
+          <button onClick={callReadData}>Call Read Data</button>
+          <button onClick={callWriteData}>Call Write Data</button>
         </>
       )}
     </div>
